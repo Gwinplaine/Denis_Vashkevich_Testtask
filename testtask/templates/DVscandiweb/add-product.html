@@ -17,7 +17,7 @@
     <div class="container">
        <div class="d-flex my-3">
         <legend>Product add</legend>
-        <button type="submit" form="add-product" class="btn btn-outline-success" id="submit">
+        <button type="submit" form="#product_form" class="btn btn-outline-success" id="submit">
           Save
         </button> 
         <button type="button" onclick="location.href='{% url 'index' %}'" class="btn btn-outline-warning" id="cancel">
@@ -25,30 +25,37 @@
         </button>
       </div>
 
-      <form action="{% url 'add-product' %}" method="post" id="add-product" class="form">
+      <form action="{% url 'add-product' %}" method="post" id="#product_form" class="form">
         {%csrf_token%}
+        <!--{{ add_product_form.as_p }}
         <div class="row mb-3">
-          <label for="sku" class="col-sm-2 col-form-label">SKU</label>
+          {{ add_product_form.sku.label }}
           <div class="col-sm-10">
-            <input type="text" class="form-control" id="sku" name='sku' required="required"/>
+            {{ add_product_form.sku }}
+          </div>
+        </div>-->
+        <div class="row mb-3">
+          <label for="sku" class="col-sm-2 col-form-label">{{ add_product_form.sku.label }} </label>
+          <div class="col-sm-10" id="sku"  name ='sku'>
+            {{ add_product_form.sku }}
           </div>
         </div>
         <div class="row mb-3">
-          <label for="name" class="col-sm-2 col-form-label">Name</label>
+          <label for="name" class="col-sm-2 col-form-label">{{ add_product_form.name.label }}</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" id="name"  name ='name' required="required"/>
+            {{ add_product_form.name }}
           </div>
         </div>
         <div class="row mb-3">
-          <label for="price" class="col-sm-2 col-form-label">Price</label>
+          <label for="price" class="col-sm-2 col-form-label">{{ add_product_form.price.label }}</label>
           <div class="col-sm-10">
-            <input type="number" class="form-control" id="price" name ='price' required="required"/>
+            {{ add_product_form.price }}
           </div>
         </div>
-        <div class="row mb-3">
-          <label class="col-sm-2 col-form-labe" for="productType">Type Switcher</label>
-          <div class="col-sm-10">
-            <select class="form-select" id="productType" >
+        <div class="row mb-3" >
+          <label class="col-sm-2 col-form-labe" for="producttype">Type Switcher</label>
+          <div class="col-sm-3">
+            <select class="form-select" id="producttype" >
               <option selected>Type Switcher</option>
               <option value="DVD" id="DVD">DVD</option>
               <option value="Book" id="Book">Book</option>
@@ -56,39 +63,39 @@
             </select>
           </div>
         </div>
-        <div id="DVD-ele" style="display: none">
+        <div id="DVD-ele" class="d-none">
           <div class="row mb-3">
-            <label for="size" class="col-sm-2 col-form-label">Size (MB)</label>
+            <label for="size" class="col-sm-2 col-form-label">{{ add_product_form.size.label }} (MB)</label>
             <div class="col-sm-10">
-              <input type="number" class="form-control" id="size" name ='size' />
+              {{ add_product_form.size }}
             </div>
           </div>
         </div>
-        <div id="Furniture-ele" style="display: none">
+        <div id="Furniture-ele" class="d-none">
           <div class="row mb-3">
-            <label for="height" class="col-sm-2 col-form-label">height (CM)</label>
+            <label for="height" class="col-sm-2 col-form-label">{{ add_product_form.height.label }} (CM)</label>
             <div class="col-sm-10">
-              <input type="number" class="form-control" id="height" name ='height'/>
+              {{ add_product_form.height }}
             </div>
           </div>
           <div class="row mb-3">
-            <label for="width" class="col-sm-2 col-form-label">width (CM)</label>
+            <label for="width" class="col-sm-2 col-form-label">{{ add_product_form.width.label }} (CM)</label>
             <div class="col-sm-10">
-              <input type="number" class="form-control" id="width" name ='width'/>
+              {{ add_product_form.width }}
             </div>
           </div>
           <div class="row mb-3">
-            <label for="length" class="col-sm-2 col-form-label">length (CM)</label>
+            <label for="length" class="col-sm-2 col-form-label">{{ add_product_form.length.label }} (CM)</label>
             <div class="col-sm-10">
-              <input type="number" class="form-control" id="length" name ='length'/>
+              {{ add_product_form.length }}
             </div>
           </div>
         </div>
-        <div id="Book-ele" style="display: none">
+        <div id="Book-ele" class="d-none">
           <div class="row mb-3">
-            <label for="weight" class="col-sm-2 col-form-label">Weight (KG)</label>
+            <label for="weight" class="col-sm-2 col-form-label">{{ add_product_form.weight.label }} (KG)</label>
             <div class="col-sm-10">
-              <input type="number" class="form-control" id="weight" name ='weight'/>
+              {{ add_product_form.weight }}
             </div>
           </div>
         </div>
@@ -97,28 +104,63 @@
     </div>
 
 <script>
+'use strict';
+let cancel = document.querySelector('#cancel');
+let submit = document.querySelector('#submit');
+let form = document.querySelector('form');
+let name = document.querySelector('#name');
+let price = document.querySelector('#price');
+let sku = document.querySelector('#sku');
 let dvdEle = document.querySelector('#DVD-ele');
 let furnitureEle = document.querySelector('#Furniture-ele');
 let bookEle = document.querySelector('#Book-ele');
+let producttype = document.querySelector('#producttype');
 
-productType.addEventListener('change', function(e) {
-    if (e.target.value === 'DVD') {
-        dvdEle.style.display = 'block';
-        bookEle.style.display = 'none';
-        furnitureEle.style.display = 'none';
 
-    } else if (e.target.value === 'Book') {
-        bookEle.style.display = 'block';
-        dvdEle.style.display = 'none';
-        furnitureEle.style.display = 'none';
 
-    } else if (e.target.value === 'Furniture') {
-        furnitureEle.style.display = 'block';
-        dvdEle.style.display = 'none';
-        bookEle.style.display = 'none';
+producttype.addEventListener('change', function() {
+    if (this.value === 'DVD') {
+
+        dvdEle.classList.remove('d-none');
+        bookEle.classList.add('d-none');
+        bookEle.value = '';
+        bookEle.removeAttribute('required');
+        furnitureEle.classList.add('d-none');
+        furnitureEle.removeAttribute('required');
+        furnitureEle.value = '';
+    } else if (this.value === 'Book') {
+
+        bookEle.classList.remove('d-none');
+        dvdEle.classList.add('d-none');
+        dvdEle.value = '';
+        dvdEle.removeAttribute('required');
+        furnitureEle.classList.add('d-none');
+        furnitureEle.value = '';
+        furnitureEle.removeAttribute('required');
+
+    } else if (this.value === 'Furniture') {
+
+        furnitureEle.classList.remove('d-none');
+        dvdEle.classList.add('d-none');
+        dvdEle.value = '';
+        dvdEle.removeAttribute('required');
+        bookEle.classList.add('d-none');
+        bookEle.value = '';
+        bookEle.removeAttribute('required');   
+        
     }
-  }
+}
 )
+
+cancel.addEventListener('click', function(e) {
+
+    form.reset()
+    location.href='..';
+    }
+)
+
+
+
 </script>
   </body>
 </html>

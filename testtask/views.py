@@ -3,6 +3,40 @@ from django.shortcuts import render, redirect
 from .models import Product
 #from django.http import HttpResponsePermanentRedirect
 #from django.urls import reverse
+from django import forms
+from django.db import models
+
+class ProductCreateForm(forms.ModelForm):
+
+    class Meta:
+        model = Product
+
+        fields = ('sku', 'name', 'price', 'size', 'weight', 'height', 'width', 'length')
+        widgets = {
+            'sku': forms.TextInput(attrs={'class': 'form-control w-25', 'id':'#sku'}),
+            'name': forms.TextInput(attrs={'class': 'form-control w-25', 'id':'#name'}),
+            'price': forms.NumberInput(attrs={'min': 0, 'class': 'form-control w-25', 'id':'#price'}),
+            #'producttype': forms.Select(attrs={'class': 'form-control w-25', 'id':'producttype', 'value':'producttype'}),
+            'size': forms.NumberInput(attrs={'min': 0, 'class': 'form-control w-25', 'id':'size', 'value':'size'}),
+            'weight': forms.NumberInput(attrs={'min': 0, 'class': 'form-control w-25', 'id':'#weight'}),
+            'height': forms.NumberInput(attrs={'min': 0, 'class': 'form-control w-25', 'id':'#height'}),
+            'width': forms.NumberInput(attrs={'min': 0, 'class': 'form-control w-25', 'id':'#width'}),
+            'length': forms.NumberInput(attrs={'min': 0, 'class': 'form-control w-25', 'id':'#length'}),
+        } # можно определить виджеты (типы полей) и аттрибуты (анпример стили или классы)
+        labels = {
+        'sku': 'sku',
+        'name': 'name',
+        'price': 'price',
+        'size': 'size',
+        }
+    def clean_fields(self):
+        # проверять что нужные поля заполнены в зависимости от типа продукта
+        # data = self.cleaned_data
+        # msg = "This field is required"
+        # for field_name, value in data.items():
+        #     if ! value:
+        #         self.add_error(field_name, msg)
+        return self
 
 
 '''class SearchForm(forms.Form):
@@ -23,45 +57,25 @@ def index(request):
     return render(request, 'DVscandiweb/index.html', context)
 
 def add_product(request):
-    if request.method != 'POST':
-        pass #form = SearchForm()
-    else:
+    if request.method == 'GET':
+        # тут рендерим форму, если она рендерится на индексе - надо поменять тот метод 
+        # или выделить отдельную страницу с формой от индекса
+        context = {'add_product_form': ProductCreateForm()}
+        return render(request, 'DVscandiweb/add-product.html', context)
+    elif request.method == 'POST':
         #form = SearchForm(request.POST)
-        add_sku = request.POST.get('sku')
-        add_name = request.POST.get('name')
-        add_price = request.POST.get('price')
-        if request.POST.get('size') != '':
-            add_size = request.POST.get('size')
+        product_form = ProductCreateForm(request.POST)
+        print(product_form)
+        if product_form.is_valid():
+            product_form.save()
+            # если надо ещё что-то с обьектом сделать, кроме заполнения полей инфой с фронта:
+            # product = product_form.save(commit=false)
+            # product.счастье_тракториста = 300
+            # product.save()
         else:
-            add_size = None
-        if request.POST.get('weight') != '':
-            add_weight = request.POST.get('weight')
-        else:
-            add_weight = None
-        if request.POST.get('height') != '':
-            add_height = request.POST.get('height')
-        else:
-            add_height = None
-        if request.POST.get('width') != '':
-            add_width = request.POST.get('width')
-        else:
-            add_width = None
-        if request.POST.get('length') != '':
-            add_length = request.POST.get('length')
-        else:
-            add_length = None
-        ex=Product.objects.create(sku = add_sku, name = add_name, price=add_price, size=add_size, 
-        weight = add_weight, height = add_height, width = add_width, length = add_length)
-        '''ex.size = request.POST.get('size')
-        ex.weight = request.POST.get('weight')
-        ex.height = request.POST.get('weight')
-        ex.width = request.POST.get('width')
-        ex.length = request.POST.get('length')
-        ex.save'''
-        #return HttpResponseRedirect(reverse('index'))
-    print(request.POST.get('price'))
-    #context = {'form': form}
-    return render(request, 'DVscandiweb/add-product.html')#, context)
+            context = {'add_product_form': product_form}
+            return render(request, 'DVscandiweb/add-product.html', context)
+    return redirect('index')
 
 def mass_delete(request):
     if request.method=='POST':
@@ -294,3 +308,180 @@ $.ajax({
 </form>
 
     '''
+'''работающий темплейт
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gwin</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    
+    <div class="container">
+       <div class="d-flex my-3">
+        <legend>Product add</legend>
+        <button type="submit" form="add-product" class="btn btn-outline-success" id="submit">
+          Save
+        </button> 
+        <button type="button" onclick="location.href='{% url 'index' %}'" class="btn btn-outline-warning" id="cancel">
+          Cancel
+        </button>
+      </div>
+
+      <form action="{% url 'add-product' %}" method="post" id="add-product" class="form">
+        {%csrf_token%}
+        <div class="row mb-3">
+          <label for="sku" class="col-sm-2 col-form-label">SKU</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" id="sku" name='sku' required="required"/>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label for="name" class="col-sm-2 col-form-label">Name</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" id="name"  name ='name' required="required"/>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label for="price" class="col-sm-2 col-form-label">Price</label>
+          <div class="col-sm-10">
+            <input type="number" class="form-control" id="price" name ='price' required="required"/>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label class="col-sm-2 col-form-labe" for="productType">Type Switcher</label>
+          <div class="col-sm-10">
+            <select class="form-select" id="productType" >
+              <option selected>Type Switcher</option>
+              <option value="DVD" id="DVD">DVD</option>
+              <option value="Book" id="Book">Book</option>
+              <option value="Furniture" id="Furniture">Furniture</option>
+            </select>
+          </div>
+        </div>
+        <div id="DVD-ele" style="display: none">
+          <div class="row mb-3">
+            <label for="size" class="col-sm-2 col-form-label">Size (MB)</label>
+            <div class="col-sm-10">
+              <input type="number" class="form-control" id="size" name ='size' />
+            </div>
+          </div>
+        </div>
+        <div id="Furniture-ele" style="display: none">
+          <div class="row mb-3">
+            <label for="height" class="col-sm-2 col-form-label">height (CM)</label>
+            <div class="col-sm-10">
+              <input type="number" class="form-control" id="height" name ='height'/>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="width" class="col-sm-2 col-form-label">width (CM)</label>
+            <div class="col-sm-10">
+              <input type="number" class="form-control" id="width" name ='width'/>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="length" class="col-sm-2 col-form-label">length (CM)</label>
+            <div class="col-sm-10">
+              <input type="number" class="form-control" id="length" name ='length'/>
+            </div>
+          </div>
+        </div>
+        <div id="Book-ele" style="display: none">
+          <div class="row mb-3">
+            <label for="weight" class="col-sm-2 col-form-label">Weight (KG)</label>
+            <div class="col-sm-10">
+              <input type="number" class="form-control" id="weight" name ='weight'/>
+            </div>
+          </div>
+        </div>
+      </form>
+      <hr/>
+    </div>
+
+<script>
+let dvdEle = document.querySelector('#DVD-ele');
+let furnitureEle = document.querySelector('#Furniture-ele');
+let bookEle = document.querySelector('#Book-ele');
+
+productType.addEventListener('change', function(e) {
+    if (e.target.value === 'DVD') {
+        dvdEle.style.display = 'block';
+        bookEle.style.display = 'none';
+        furnitureEle.style.display = 'none';
+
+    } else if (e.target.value === 'Book') {
+        bookEle.style.display = 'block';
+        dvdEle.style.display = 'none';
+        furnitureEle.style.display = 'none';
+
+    } else if (e.target.value === 'Furniture') {
+        furnitureEle.style.display = 'block';
+        dvdEle.style.display = 'none';
+        bookEle.style.display = 'none';
+    }
+  }
+)
+</script>
+  </body>
+</html>
+'''
+
+'''работающий add product
+def add_product(request):
+    if request.method != 'POST':
+        pass #form = SearchForm()
+    else:
+        #form = SearchForm(request.POST)
+        add_sku = request.POST.get('sku')
+        add_name = request.POST.get('name')
+        add_price = request.POST.get('price')
+        if request.POST.get('size') != '':
+            add_size = request.POST.get('size')
+        else:
+            add_size = None
+        if request.POST.get('weight') != '':
+            add_weight = request.POST.get('weight')
+        else:
+            add_weight = None
+        if request.POST.get('height') != '':
+            add_height = request.POST.get('height')
+        else:
+            add_height = None
+        if request.POST.get('width') != '':
+            add_width = request.POST.get('width')
+        else:
+            add_width = None
+        if request.POST.get('length') != '':
+            add_length = request.POST.get('length')
+        else:
+            add_length = None
+        ex=Product.objects.create(sku = add_sku, name = add_name, price=add_price, size=add_size, 
+        weight = add_weight, height = add_height, width = add_width, length = add_length)
+        #ex.size = request.POST.get('size')
+        #ex.weight = request.POST.get('weight')
+        #ex.height = request.POST.get('weight')
+        #ex.width = request.POST.get('width')
+        #ex.length = request.POST.get('length')
+        #ex.save
+        #return HttpResponseRedirect(reverse('index'))
+    print(request.POST.get('price'))
+    #context = {'form': form}
+    return render(request, 'DVscandiweb/add-product.html')#, context)
+
+def mass_delete(request):
+    if request.method=='POST':
+        to_delete = request.POST.getlist('products')
+        Product.objects.filter(id__in=to_delete).delete()
+    return redirect('index')
+
+'''
