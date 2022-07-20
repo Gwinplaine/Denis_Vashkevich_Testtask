@@ -43,13 +43,3 @@ class ProductCreateForm(forms.ModelForm):
             'weight': 'Weight (KG)',
         }
 
-    '''def clean_producttype(self):
-        data = self.cleaned_data
-        print(data)
-        # проверять что нужные поля заполнены в зависимости от типа продукта
-        # data = self.cleaned_data
-        # msg = "This field is required"
-        # for field_name, value in data.items():
-        #     if ! value:
-        #         self.add_error(field_name, msg)
-        return self'''
