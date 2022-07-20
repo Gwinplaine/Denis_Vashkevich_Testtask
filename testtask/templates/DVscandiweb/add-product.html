@@ -1,166 +1,149 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Gwin</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
-      crossorigin="anonymous"
-    />
-  </head>
-  <body>
-    
+{% extends 'DVscandiweb/index.html' %}
+{% load static %}
+{% block content %}
     <div class="container">
-       <div class="d-flex my-3">
-        <legend>Product add</legend>
-        <button type="submit" form="#product_form" class="btn btn-outline-success" id="submit">
-          Save
-        </button> 
-        <button type="button" onclick="location.href='{% url 'index' %}'" class="btn btn-outline-warning" id="cancel">
-          Cancel
-        </button>
-      </div>
+        <div class="d-flex my-3">
+            <h3 class="nav col-lg-auto me-lg-auto mb-md-0">Product add</h3>
+            <button type="submit" form="product_form" class="btn btn-outline-success" id="submit_btn">
+                Save
+            </button>
+            <a type="button" href='{% url 'index' %}' class="btn btn-outline-warning" id="cancel_btn">
+                Cancel
+            </a>
+        </div>
+        {% if add_product_form.errors %}
+            <div class="alert alert-warning text-center" role="alert">Please correct the errors below</div>
+        {% endif %}
 
-      <form action="{% url 'add-product' %}" method="post" id="#product_form" class="form">
-        {%csrf_token%}
-        <!--{{ add_product_form.as_p }}
-        <div class="row mb-3">
-          {{ add_product_form.sku.label }}
-          <div class="col-sm-10">
-            {{ add_product_form.sku }}
-          </div>
-        </div>-->
-        <div class="row mb-3">
-          <label for="sku" class="col-sm-2 col-form-label">{{ add_product_form.sku.label }} </label>
-          <div class="col-sm-10" id="sku"  name ='sku'>
-            {{ add_product_form.sku }}
-          </div>
-        </div>
-        <div class="row mb-3">
-          <label for="name" class="col-sm-2 col-form-label">{{ add_product_form.name.label }}</label>
-          <div class="col-sm-10">
-            {{ add_product_form.name }}
-          </div>
-        </div>
-        <div class="row mb-3">
-          <label for="price" class="col-sm-2 col-form-label">{{ add_product_form.price.label }}</label>
-          <div class="col-sm-10">
-            {{ add_product_form.price }}
-          </div>
-        </div>
-        <div class="row mb-3" >
-          <label class="col-sm-2 col-form-labe" for="producttype">Type Switcher</label>
-          <div class="col-sm-3">
-            <select class="form-select" id="producttype" >
-              <option selected>Type Switcher</option>
-              <option value="DVD" id="DVD">DVD</option>
-              <option value="Book" id="Book">Book</option>
-              <option value="Furniture" id="Furniture">Furniture</option>
-            </select>
-          </div>
-        </div>
-        <div id="DVD-ele" class="d-none">
-          <div class="row mb-3">
-            <label for="size" class="col-sm-2 col-form-label">{{ add_product_form.size.label }} (MB)</label>
-            <div class="col-sm-10">
-              {{ add_product_form.size }}
+        <form action="{% url 'add-product' %}" method="post" id="product_form" class="form">
+            {% csrf_token %}
+            <div class="row mb-3">
+                {{ add_product_form.sku.label_tag }}
+                <div class="col-sm-10">
+                    {{ add_product_form.sku }}
+                    <div class="field-errors"
+                         style="font-size: smaller; font-weight: bolder; color: red;">
+                        {% if add_product_form.sku.errors %}
+                            {{ add_product_form.sku.errors }}
+                        {% endif %}
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-        <div id="Furniture-ele" class="d-none">
-          <div class="row mb-3">
-            <label for="height" class="col-sm-2 col-form-label">{{ add_product_form.height.label }} (CM)</label>
-            <div class="col-sm-10">
-              {{ add_product_form.height }}
+            <div class="row mb-3">
+                {{ add_product_form.name.label_tag }}
+                <div class="col-sm-10">
+                    {{ add_product_form.name }}
+                    <div class="field-errors"
+                         style="font-size: smaller; font-weight: bolder; color: red;">
+                        {% if add_product_form.name.errors %}
+                            {{ add_product_form.name.errors }}
+                        {% endif %}
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="row mb-3">
-            <label for="width" class="col-sm-2 col-form-label">{{ add_product_form.width.label }} (CM)</label>
-            <div class="col-sm-10">
-              {{ add_product_form.width }}
+            <div class="row mb-3">
+                {{ add_product_form.price.label_tag }}
+                <div class="col-sm-10">
+                    {{ add_product_form.price }}
+                    <div class="field-errors"
+                         style="font-size: smaller; font-weight: bolder; color: red;">
+                        {% if add_product_form.price.errors %}
+                            {{ add_product_form.price.errors }}
+                        {% endif %}
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="row mb-3">
-            <label for="length" class="col-sm-2 col-form-label">{{ add_product_form.length.label }} (CM)</label>
-            <div class="col-sm-10">
-              {{ add_product_form.length }}
+            <div class="row mb-3">
+                {{ add_product_form.producttype.label_tag }}
+                <div class="col-sm-10">
+                    {{ add_product_form.producttype }}
+                </div>
             </div>
-          </div>
-        </div>
-        <div id="Book-ele" class="d-none">
-          <div class="row mb-3">
-            <label for="weight" class="col-sm-2 col-form-label">{{ add_product_form.weight.label }} (KG)</label>
-            <div class="col-sm-10">
-              {{ add_product_form.weight }}
+            <div id="DVDchoice" class="d-none">
+                <div class="row mb-3">
+                    {{ add_product_form.size.label_tag }}
+                    <div class="col-sm-10">
+                        {{ add_product_form.size }}
+                        <div class="field-errors"
+                             style="font-size: smaller; font-weight: bolder; color: red;">
+                            {% if add_product_form.size.errors %}
+                                {{ add_product_form.size.errors }}
+                            {% endif %}
+                        </div>
+                        <div>
+                            Please, provide {{ add_product_form.size.label }}
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-      </form>
-      <hr/>
+            <div id="Furniturechoice" class="d-none">
+                <div class="row mb-3">
+                    {{ add_product_form.height.label_tag }}
+                    <div class="col-sm-10">
+                        {{ add_product_form.height }}
+                        <div class="field-errors"
+                             style="font-size: smaller; font-weight: bolder; color: red;">
+                            {% if add_product_form.height.errors %}
+                                {{ add_product_form.height.errors }}
+                            {% endif %}
+                        </div>
+                        <div>
+                            Please, provide {{ add_product_form.height.label }}
+                        </div>                        
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    {{ add_product_form.width.label_tag }}
+                    <div class="col-sm-10">
+                        {{ add_product_form.width }}
+                        <div class="field-errors"
+                             style="font-size: smaller; font-weight: bolder; color: red;">
+                            {% if add_product_form.width.errors %}
+                                {{ add_product_form.width.errors }}
+                            {% endif %}
+                        </div>
+                        <div>
+                            Please, provide {{ add_product_form.width.label }}
+                        </div>  
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    {{ add_product_form.length.label_tag }}
+                    <div class="col-sm-10">
+                        {{ add_product_form.length }}
+                        <div class="field-errors"
+                             style="font-size: smaller; font-weight: bolder; color: red;">
+                            {% if add_product_form.length.errors %}
+                                {{ add_product_form.length.errors }}
+                            {% endif %}
+                        </div>
+                        <div>
+                            Please, provide {{ add_product_form.length.label }}
+                        </div> 
+                    </div>
+                </div>
+            </div>
+            <div id="Bookchoice" class="d-none">
+                <div class="row mb-3">
+                    {{ add_product_form.weight.label_tag }}
+                    <div class="col-sm-10">
+                        {{ add_product_form.weight }}
+                        <div class="field-errors"
+                             style="font-size: smaller; font-weight: bolder; color: red;">
+                            {% if add_product_form.weight.errors %}
+                                {{ add_product_form.weight.errors }}
+                            {% endif %}
+                        </div>
+                        <div>
+                            Please, provide {{ add_product_form.weight.label }}
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
 
-<script>
-'use strict';
-let cancel = document.querySelector('#cancel');
-let submit = document.querySelector('#submit');
-let form = document.querySelector('form');
-let name = document.querySelector('#name');
-let price = document.querySelector('#price');
-let sku = document.querySelector('#sku');
-let dvdEle = document.querySelector('#DVD-ele');
-let furnitureEle = document.querySelector('#Furniture-ele');
-let bookEle = document.querySelector('#Book-ele');
-let producttype = document.querySelector('#producttype');
-
-
-
-producttype.addEventListener('change', function() {
-    if (this.value === 'DVD') {
-
-        dvdEle.classList.remove('d-none');
-        bookEle.classList.add('d-none');
-        bookEle.value = '';
-        bookEle.removeAttribute('required');
-        furnitureEle.classList.add('d-none');
-        furnitureEle.removeAttribute('required');
-        furnitureEle.value = '';
-    } else if (this.value === 'Book') {
-
-        bookEle.classList.remove('d-none');
-        dvdEle.classList.add('d-none');
-        dvdEle.value = '';
-        dvdEle.removeAttribute('required');
-        furnitureEle.classList.add('d-none');
-        furnitureEle.value = '';
-        furnitureEle.removeAttribute('required');
-
-    } else if (this.value === 'Furniture') {
-
-        furnitureEle.classList.remove('d-none');
-        dvdEle.classList.add('d-none');
-        dvdEle.value = '';
-        dvdEle.removeAttribute('required');
-        bookEle.classList.add('d-none');
-        bookEle.value = '';
-        bookEle.removeAttribute('required');   
-        
-    }
-}
-)
-
-cancel.addEventListener('click', function(e) {
-
-    form.reset()
-    location.href='..';
-    }
-)
-
-
-
-</script>
-  </body>
-</html>
+{% endblock %}
+{% block js %}
+    <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+{% endblock %}

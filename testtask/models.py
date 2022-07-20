@@ -1,19 +1,18 @@
 from django.db import models
 
+
 class Product(models.Model):
-    #producttype_choices = (('DVD', 'DVD'), ('Book', 'Book'),('Furniture', 'Furniture'))
-    
-    #producttype = models.CharField(max_length=30, choices=producttype_choices)
-    sku = models.CharField(max_length=30)
+    sku = models.CharField(max_length=30, unique=True)
     name = models.CharField(max_length=30)
-    price = models.PositiveIntegerField()
-    size = models.PositiveIntegerField(default=None, blank=True, null=True)
-    weight = models.PositiveIntegerField(default=None, blank=True, null=True)
-    height = models.PositiveIntegerField(default=None, blank=True, null=True)
-    width = models.PositiveIntegerField(default=None, blank=True, null=True)
-    length = models.PositiveIntegerField(default=None, blank=True, null=True)
+    price = models.DecimalField(decimal_places=2, max_digits=16)
+    size = models.IntegerField(blank=True, null=True)
+    weight = models.IntegerField(blank=True, null=True)
+    height = models.IntegerField(blank=True, null=True)
+    width = models.IntegerField(blank=True, null=True)
+    length = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
         return self.name
+
 
 

@@ -1,22 +1,55 @@
-from django.forms import ModelForm
+from django import forms
 from .models import Product
 
-class ProductCreateForm(ModelForm):
+PRODUCT_TYPES = (
+    (None, 'Please select product type'),
+    ('DVD', 'DVD'),
+    ('Book', 'Book'),
+    ('Furniture', 'Furniture')
+    )
+
+
+class ProductCreateForm(forms.ModelForm):
+
+    producttype = forms.CharField(
+        widget=forms.Select(
+            choices=PRODUCT_TYPES,
+            attrs={'class': 'form-select w-25', 'id': 'producttype'}),
+        label='Type Switcher'
+    )
+
     class Meta:
         model = Product
+
         fields = ('sku', 'name', 'price', 'size', 'weight', 'height', 'width', 'length')
-        #widjets = {} # можно определить виджеты (типы полей) и аттрибуты (анпример стили или классы)
-        labels = {
-        'sku': 'что бы это не значило',
-        'name': 'Name',
-        'price': 'Price',
-        'size': 'Size',
+        widgets = {
+            'sku': forms.TextInput(attrs={'class': 'form-control w-25', 'id':'sku'}),
+            'name': forms.TextInput(attrs={'class': 'form-control w-25', 'id':'name'}),
+            'price': forms.NumberInput(attrs={'class': 'form-control w-25', 'id':'price'}),
+            'size': forms.NumberInput(attrs={'min': 0, 'class': 'form-control w-25', 'id':'size'}),
+            'weight': forms.NumberInput(attrs={'class': 'form-control w-25', 'id':'weight'}),
+            'height': forms.NumberInput(attrs={'class': 'form-control w-25', 'id':'height'}),
+            'width': forms.NumberInput(attrs={'class': 'form-control w-25', 'id':'width'}),
+            'length': forms.NumberInput(attrs={'class': 'form-control w-25', 'id':'length'}),
         }
-    def clean_fields(self):
+        labels = {
+            'sku': 'SKU',
+            'name': 'Name',
+            'price': 'Price',
+            'size': 'Size (MB)',
+            'height': 'Height (CM)',
+            'width': 'Width (CM)',
+            'length': 'Length (CM)',
+            'weight': 'Weight (KG)',
+        }
+
+    '''def clean_producttype(self):
+        data = self.cleaned_data
+        print(data)
         # проверять что нужные поля заполнены в зависимости от типа продукта
         # data = self.cleaned_data
         # msg = "This field is required"
         # for field_name, value in data.items():
         #     if ! value:
         #         self.add_error(field_name, msg)
-        return self
+        return self'''
