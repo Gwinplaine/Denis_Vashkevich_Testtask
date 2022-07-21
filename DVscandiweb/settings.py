@@ -32,10 +32,6 @@ BOOTSTRAP3 = {
 }
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [
-    BASE_DIR.joinpath("static/"),
-
-]
 
 # Application definition
 
