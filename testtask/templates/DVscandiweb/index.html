@@ -23,9 +23,9 @@
             <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
                 <h3 class="nav col-lg-auto me-lg-auto mb-md-0">Product List</h3>
                 <div class="text-end">
-                    <a type="button" href='{% url 'add-product' %}' class="btn btn-outline-success">Add</a>
+                    <a type="button" href='{% url 'add-product' %}' class="btn btn-outline-success">ADD</a>
                     <button type="submit" form="delete_form" class="btn btn-outline-warning" id="delete-product-btn">
-                        Mass delete
+                        MASS DELETE
                     </button>
                 </div>
             </div>
@@ -41,7 +41,7 @@
                         <div class="col">
                             <div class="card shadow-sm">
                                 <div class="card-body ">
-                                    <div class='form-check'>
+                                    <div class="delete-checkbox">
                                         <input type='checkbox' class="delete-checkbox" value='{{ product.id }}'
                                                id='{{ product.id }}'
                                                name='products'>

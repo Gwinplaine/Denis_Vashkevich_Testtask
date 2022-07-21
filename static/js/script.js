@@ -1,8 +1,5 @@
 'use strict';
 window.addEventListener("DOMContentLoaded", function (event) {
-    let cancel_btn = document.querySelector('#cancel_btn');
-    let submit_btn = document.querySelector('#submit_btn');
-    let form = document.querySelector('#product_form');
     let dvd_size_input = document.querySelector('#size')
     let book_weight_input = document.querySelector('#weight')
     let furniture_height_input = document.querySelector('#height')
@@ -12,7 +9,7 @@ window.addEventListener("DOMContentLoaded", function (event) {
     let dvd_div = document.querySelector('#DVDchoice');
     let furniture_div = document.querySelector('#Furniturechoice');
     let book_div = document.querySelector('#Bookchoice');
-    let producttype = document.querySelector('#producttype');
+    let productType = document.querySelector('#producttype');
 
     function hide_furniture() {
         furniture_div.classList.add('d-none');
@@ -34,7 +31,7 @@ window.addEventListener("DOMContentLoaded", function (event) {
         dvd_size_input.removeAttribute('required');
     }
 
-    producttype.addEventListener('change', function () {
+    productType.addEventListener('change', function () {
             if (this.value === 'DVD') {
                 dvd_div.classList.remove('d-none');
                 dvd_size_input.setAttribute('required', true);

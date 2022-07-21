@@ -25,12 +25,12 @@ class ProductCreateForm(forms.ModelForm):
         widgets = {
             'sku': forms.TextInput(attrs={'class': 'form-control w-25', 'id':'sku'}),
             'name': forms.TextInput(attrs={'class': 'form-control w-25', 'id':'name'}),
-            'price': forms.NumberInput(attrs={'class': 'form-control w-25', 'id':'price'}),
+            'price': forms.NumberInput(attrs={'min': 0,'class': 'form-control w-25', 'id':'price'}),
             'size': forms.NumberInput(attrs={'min': 0, 'class': 'form-control w-25', 'id':'size'}),
-            'weight': forms.NumberInput(attrs={'class': 'form-control w-25', 'id':'weight'}),
-            'height': forms.NumberInput(attrs={'class': 'form-control w-25', 'id':'height'}),
-            'width': forms.NumberInput(attrs={'class': 'form-control w-25', 'id':'width'}),
-            'length': forms.NumberInput(attrs={'class': 'form-control w-25', 'id':'length'}),
+            'weight': forms.NumberInput(attrs={'min': 0,'class': 'form-control w-25', 'id':'weight'}),
+            'height': forms.NumberInput(attrs={'min': 0,'class': 'form-control w-25', 'id':'height'}),
+            'width': forms.NumberInput(attrs={'min': 0,'class': 'form-control w-25', 'id':'width'}),
+            'length': forms.NumberInput(attrs={'min': 0,'class': 'form-control w-25', 'id':'length'}),
         }
         labels = {
             'sku': 'SKU',
