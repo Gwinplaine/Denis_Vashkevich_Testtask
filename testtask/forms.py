@@ -1,6 +1,7 @@
 from django import forms
 from .models import Product
 
+# list definition of switcher choice options
 PRODUCT_TYPES = (
     (None, 'Please select product type'),
     ('DVD', 'DVD'),
@@ -8,7 +9,7 @@ PRODUCT_TYPES = (
     ('Furniture', 'Furniture')
     )
 
-
+# creating a form based on the model
 class ProductCreateForm(forms.ModelForm):
 
     producttype = forms.CharField(
