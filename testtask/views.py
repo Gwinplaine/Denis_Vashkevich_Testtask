@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from .models import Product
 from .forms import ProductCreateForm
 
-# view of the index page with all the products from the database
+# view of the index page with all products from the database
 def index(request):
     all_products = Product.objects.order_by('id')
     context = {'all': all_products}
