@@ -8,10 +8,15 @@
         <div class="panel-body">
             <a type="button" href="{% url 'add-product' %}" class="btn btn-outline-secondary">Add product to list</a>
         </div>
+        {% if user.is_authenticated %}
             <button type="submit" form="delete_form" class="btn btn-outline-success" id="addtocart-product-btn">
                 Add product to my cart
             </button>
-
+        {% else %}
+            <div class="panel-body">
+                <a type="button" href="{% url 'users:login' %}" class="btn btn-outline-success">Login to add products to cart</a>
+            </div>
+        {% endif %}
 </div>
 </header>
     <form action="{% url 'add_to_fav' %}" id="delete_form" method='post' class="form">
