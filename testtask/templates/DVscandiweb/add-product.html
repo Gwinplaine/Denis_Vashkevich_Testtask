@@ -1,4 +1,4 @@
-{% extends 'DVscandiweb/index.html' %}
+{% extends 'DVscandiweb/base.html' %}
 {% load static %}
 {% block content %}
     <div class="container">
@@ -7,7 +7,7 @@
             <button type="submit" form="product_form" class="btn btn-outline-success" id="submit_btn">
                 Save
             </button>
-            <a type="button" href='{% url 'index' %}' class="btn btn-outline-warning" id="cancel_btn">
+            <a type="button" href="{% url 'index' %}" class="btn btn-outline-warning" id="cancel_btn">
                 Cancel
             </a>
         </div>
@@ -147,3 +147,4 @@
 {% block js %}
     <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
 {% endblock %}
+

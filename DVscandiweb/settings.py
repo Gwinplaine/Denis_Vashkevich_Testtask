@@ -32,7 +32,9 @@ BOOTSTRAP3 = {
 }
 STATIC_URL = '/static/'
 
-
+STATICFILES_DIRS = [
+    BASE_DIR.joinpath("static/"),
+]
 # Application definition
 
 INSTALLED_APPS = [
@@ -44,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'testtask',
     'bootstrap3',
+    'users',
 ]
 
 MIDDLEWARE = [

@@ -1,0 +1,60 @@
+<!doctype html>
+{% load static %}
+{% load bootstrap3 %}
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Denis Vashkevich">
+    <meta name="generator" content="Hugo 0.98.0">
+    <meta name="theme-color" content="#712cf9">
+    <title>DV</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/album/">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+</head>
+<body>
+
+    <div class="container">
+        <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+          <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+            <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+
+          </a>
+    
+          <ul class="nav nav-pills">
+            {% if user.is_authenticated %}
+            <li><button type="button" class="btn btn-light">Hi, {{ user.username }}</button></li>
+            <li><a type="button" href="{% url 'favourites' %}" class="btn btn-outline-secondary">My cart</a></li>
+            <li><a type="button" href="{% url 'users:logout' %}" class="btn btn-outline-danger">Log out</a></li>
+            {% else %}
+            <li><a type="button" href="{% url 'users:register' %}" class="btn btn-outline-success">Register</a></li>
+            <li><a type="button" href="{% url 'users:login' %}" class="btn btn-outline-success">Log in</a></li>
+            {% endif %}
+          </ul>
+        </header>
+      </div>
+
+<div class="container-xxl">
+    <div>
+        {% block header %}{% endblock header %}
+    </div>
+    <div>
+        {% block content %}{% endblock content %}
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+    {% block js %}{% endblock js %}
+    </div>
+</div>
+
+<br>
+<center>Denis Vashkevich 3488927@gmail.com</center>
+<br>
+
+</body>
+</html>

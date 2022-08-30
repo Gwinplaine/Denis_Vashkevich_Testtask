@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 
 class Product(models.Model):
     sku = models.CharField(max_length=30, unique=True)
@@ -10,7 +10,8 @@ class Product(models.Model):
     height = models.IntegerField(blank=True, null=True)
     width = models.IntegerField(blank=True, null=True)
     length = models.IntegerField(blank=True, null=True)
-
+    like = models.ManyToManyField(User, blank=True)
+    
     def __str__(self):
         return self.name
 

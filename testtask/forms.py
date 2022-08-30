@@ -41,6 +41,6 @@ class ProductCreateForm(forms.ModelForm):
             'height': 'Height (CM)',
             'width': 'Width (CM)',
             'length': 'Length (CM)',
-            'weight': 'Weight (KG)',
+            'weight': 'Pages (pcs.)',
         }
 
